@@ -11,7 +11,8 @@ const account2 = "0x160b74B15C3483648efcA3707D74593De86F8411"
 
 const privateKey1 = Buffer.from(process.env.PRIVATE_KEY_1, 'hex')
 
-web3.eth.getTransactionCount(account1, (err, txCount) => {
+async function main() {
+  const txCount = await web3.eth.getTransactionCount(account1)
   const txObject = {
     nonce:    web3.utils.toHex(txCount),
     to:       account2,
@@ -24,10 +25,16 @@ web3.eth.getTransactionCount(account1, (err, txCount) => {
   tx.sign(privateKey1)
   
   const serializedTx = tx.serialize()
-  const raw = '0x' + serializedTx.toString('hex')
+  const raw = '0x' + serializedTx.toString('hex')  
 
-  web3.eth.sendSignedTransaction(raw, (err, txHash) => {
-    console.log('txHash:', txHash)
-  })
+  const txHash = await web3.eth.sendSignedTransaction(raw)
+
+  console.log(`You can visit https://ropsten.etherscan.io/tx/${txHash['transactionHash']} for detail`)
+}
+
+main().catch((err) => {
+  console.log("We have encountered an error!")
+  console.error(err)
 })
+
 
