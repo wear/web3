@@ -1,9 +1,4 @@
-require('dotenv').config();
-
-const APIKEY = process.env.APIKEY;
-const Web3 = require('web3')
-const rpcURL = `https://ropsten.infura.io/v3/${APIKEY}`
-const web3 = new Web3(rpcURL)
+const web3 = require('./base').ropsten()
 
 var Tx = require('ethereumjs-tx').Transaction
 const account1 = "0x4Ff0D037630e8794B7a054fDb38e9B7319f85901"
